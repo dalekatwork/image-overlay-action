@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { Popconfirm, Button } from 'antd';
+import { Popconfirm, Button, Layout } from 'antd';
 import { QuestionCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import ReactRegionSelect from 'react-region-select';
 import logo from '../logo.svg';
+
+import SideBar from './Sidebar';
+import ObjectList from './ObjectList';
 
 export default function ImageOverlay(){
 	const [regions, setRegions] = useState<any>([]);
@@ -44,7 +47,7 @@ export default function ImageOverlay(){
 		if (!regionProps.isChanging) {
 			return (
 				<div style={{ position: 'absolute', right: 0, bottom: '-1.5em' }}>
-					<Popconfirm title="Are you sure？"
+					<Popconfirm title="Are you sure you want to delete this object?"
 						icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
 						onConfirm={(event) => changeRegionData(regionProps.index, event)}>
 						<Button danger type="primary" shape="circle" icon={<DeleteOutlined />} />
@@ -54,13 +57,17 @@ export default function ImageOverlay(){
 		}
 	}
 
-	return <>
-		<ReactRegionSelect
-			regions={regions}
-			onChange={(reg: any) => setRegions(reg)}
-			regionRenderer={regionRenderer}
-			>
-				<img src={logo} alt="Sampler" width='700px'/>
-		</ReactRegionSelect>	
-	</>;
+	return <Layout>
+      <Layout.Sider collapsed><SideBar/></Layout.Sider>
+      <Layout.Content>
+				<ReactRegionSelect
+					regions={regions}
+					onChange={(reg: any) => setRegions(reg)}
+					regionRenderer={regionRenderer}
+					>
+					<img src={logo} alt="Sampler" width='700px'/>
+				</ReactRegionSelect>
+			</Layout.Content>
+      <Layout.Sider><ObjectList objects={regions}/></Layout.Sider>
+    </Layout>;
 }

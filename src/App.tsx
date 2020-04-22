@@ -1,11 +1,12 @@
 import React from 'react';
+
 import './App.css';
 import ImageOverlay from './components/ImageOverlay';
 
 const App = () => (
-  <div className="App">
+  <div className="app">
     <ImageOverlay/>
-  </div>
+ </div>
 );
 
 export default App;
