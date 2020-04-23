@@ -1,11 +1,12 @@
 import React from "react";
 import { Menu } from 'antd';
-import objectAssign from 'object-assign';
 
 interface ObjectListProps {
 	objects: any[],
 	setObjects: Function
 }
+
+const HIGHLIGHT_COLOR: string = 'rgba(0, 0, 255, 0.5)';
 
 export default function ObjectList({objects, setObjects}: ObjectListProps){
 
@@ -14,16 +15,14 @@ export default function ObjectList({objects, setObjects}: ObjectListProps){
 		
 		if (object && object.data) {
 			object.data.regionStyle = {
-				backgroundColor: 'rgba(0, 0, 255, 0.5)'
+				backgroundColor: HIGHLIGHT_COLOR
 			};
 		}
 
 		setObjects([
 			...objects.slice(0, key),
-			objectAssign({}, object, {
-				data: objectAssign({}, object.data)
-			}),
-			...objects.slice(key + 1)
+			object,
+			...objects.slice(parseInt(key)+1, objects.length)
 		]);
 	}
 
