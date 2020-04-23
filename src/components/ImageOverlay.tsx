@@ -2,41 +2,16 @@ import React, { useState } from "react";
 import { Popconfirm, Button, Layout } from 'antd';
 import { QuestionCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import ReactRegionSelect from 'react-region-select';
-import logo from '../logo.svg';
 
+import logo from '../logo1.jpg';
 import SideBar from './Sidebar';
 import ObjectList from './ObjectList';
 
 export default function ImageOverlay(){
+	const [drawBox, setDrawBox] = useState<boolean>(false);
 	const [regions, setRegions] = useState<any>([]);
 
-	function	changeRegionData (index: number, event: any) {
-		event.stopPropagation();
-		/*
-		// to manipulate background color for selected area
-		const region = regions[index];
-		let color;
-		switch (event.target.value) {
-			case '1':
-				color = 'rgba(0, 255, 0, 0.5)';
-				break;
-			case '2':
-				color = 'rgba(0, 0, 255, 0.5)';
-				break;
-			case '3':
-				color = 'rgba(255, 0, 0, 0.5)';
-				break;
-			default:
-				color = 'rgba(0, 0, 0, 0.5)';
-		}
-
-		if (region && region.data) {
-			region.data.regionStyle = {
-				background: color
-			};
-		}
-		*/
-		
+	function changeRegionData (index: number) {
 		setRegions([
 			...regions.slice(0, index),
 			...regions.slice(index+1, regions.length-1),
@@ -49,7 +24,7 @@ export default function ImageOverlay(){
 				<div style={{ position: 'absolute', right: 0, bottom: '-1.5em' }}>
 					<Popconfirm title="Are you sure you want to delete this object?"
 						icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-						onConfirm={(event) => changeRegionData(regionProps.index, event)}>
+						onConfirm={() => changeRegionData(regionProps.index)}>
 						<Button danger type="primary" shape="circle" icon={<DeleteOutlined />} />
 					</Popconfirm>
 				</div>
@@ -57,17 +32,23 @@ export default function ImageOverlay(){
 		}
 	}
 
-	return <Layout>
-      <Layout.Sider collapsed><SideBar/></Layout.Sider>
-      <Layout.Content>
+	return <Layout style={{height: '100%'}}>
+		<Layout.Sider collapsed>
+			<SideBar drawBox={drawBox} setDrawBox={setDrawBox}/>
+		</Layout.Sider>
+		<Layout.Content>
+			{drawBox ?
 				<ReactRegionSelect
 					regions={regions}
 					onChange={(reg: any) => setRegions(reg)}
 					regionRenderer={regionRenderer}
-					>
-					<img src={logo} alt="Sampler" width='700px'/>
-				</ReactRegionSelect>
-			</Layout.Content>
-      <Layout.Sider><ObjectList objects={regions}/></Layout.Sider>
-    </Layout>;
+					constraint={false}>
+					<img src={logo} alt="Sampler" width='1200px'/>
+				</ReactRegionSelect> :
+				<img src={logo} alt="Sampler" width='1200px'/>}
+		</Layout.Content>
+		<Layout.Sider>
+			<ObjectList objects={regions} setObjects={setRegions}/>
+		</Layout.Sider>
+	</Layout>;
 }

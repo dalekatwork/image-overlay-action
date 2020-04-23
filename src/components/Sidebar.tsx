@@ -1,19 +1,20 @@
 import React from "react";
-import { Menu } from 'antd';
-import { SelectOutlined } from '@ant-design/icons';
+import { WalletFilled } from '@ant-design/icons';
 
-export default function Sidebar(){
+interface DrawBox {
+	drawBox: boolean,
+	setDrawBox: Function,
+}
+
+export default function Sidebar({ drawBox, setDrawBox }: DrawBox){
 	return (
-		<div>
-			<Menu
-				mode="inline"
-				theme="dark"
-				inlineCollapsed
-			>
-				<Menu.Item key="1">
-					<SelectOutlined />
-				</Menu.Item>
-			</Menu>
-		</div>
-	)
+		<WalletFilled 
+			onClick={()=> setDrawBox(!drawBox)}
+			style={{
+				color: drawBox?'lightgreen': 'white',
+				margin: '16px auto',
+				width: '100%',
+				fontSize: '20px',
+			}}/>
+	);
 }

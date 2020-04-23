@@ -1,7 +1,12 @@
 @import '~antd/dist/antd.css';
 
-.App {
+#root{
+  height: 100%;
+}
+
+.app {
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {
